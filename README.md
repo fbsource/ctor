@@ -86,7 +86,7 @@ function is run at startup time.
 The above example translates into the following Rust code (approximately):
 
 ```rust
-    #[used]
+    #[used(linker)]
     #[cfg_attr(any(target_os = "linux", target_os = "android"), link_section = ".init_array")]
     #[cfg_attr(target_os = "freebsd", link_section = ".init_array")]
     #[cfg_attr(target_os = "netbsd", link_section = ".init_array")]

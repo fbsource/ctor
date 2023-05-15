@@ -1,3 +1,4 @@
+#![feature(used_with_arg)]
 #![allow(dead_code, unused_imports)]
 
 use ctor::*;

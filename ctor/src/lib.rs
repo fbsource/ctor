@@ -65,6 +65,8 @@ macro_rules! ctor_attributes {
 /// Print a startup message (using `libc_print` for safety):
 ///
 /// ```rust
+/// # #![feature(used_with_arg)]
+/// #
 /// # extern crate ctor;
 /// # use ctor::*;
 /// use libc_print::std_name::println;
@@ -82,6 +84,8 @@ macro_rules! ctor_attributes {
 /// Make changes to `static` variables:
 ///
 /// ```rust
+/// # #![feature(used_with_arg)]
+/// #
 /// # extern crate ctor;
 /// # use ctor::*;
 /// # use std::sync::atomic::{AtomicBool, Ordering};
@@ -96,6 +100,8 @@ macro_rules! ctor_attributes {
 /// Initialize a `HashMap` at startup time:
 ///
 /// ```rust
+/// # #![feature(used_with_arg)]
+/// #
 /// # extern crate ctor;
 /// # use std::collections::HashMap;
 /// # use ctor::*;
@@ -122,7 +128,9 @@ macro_rules! ctor_attributes {
 /// The above example translates into the following Rust code (approximately):
 ///
 ///```rust
-/// #[used]
+/// # #![feature(used_with_arg)]
+/// #
+/// #[used(linker)]
 /// #[cfg_attr(any(target_os = "linux", target_os = "android"), link_section = ".init_array")]
 /// #[cfg_attr(target_os = "freebsd", link_section = ".init_array")]
 /// #[cfg_attr(target_os = "netbsd", link_section = ".init_array")]
@@ -176,7 +184,7 @@ pub fn ctor(_attribute: TokenStream, function: TokenStream) -> TokenStream {
             #(#attrs)*
             #vis #unsafety extern #abi #constness fn #ident() #block
 
-            #[used]
+            #[used(linker)]
             #[allow(non_upper_case_globals)]
             #[doc(hidden)]
             #tokens
@@ -253,7 +261,7 @@ pub fn ctor(_attribute: TokenStream, function: TokenStream) -> TokenStream {
                 }
             }
 
-            #[used]
+            #[used(linker)]
             #[allow(non_upper_case_globals)]
             #tokens
             static #ctor_ident
@@ -284,6 +292,8 @@ pub fn ctor(_attribute: TokenStream, function: TokenStream) -> TokenStream {
 /// it allows you to use `stdout` in your handlers.
 ///
 /// ```rust
+/// # #![feature(used_with_arg)]
+/// #
 /// # extern crate ctor;
 /// # use ctor::*;
 /// # fn main() {}
@@ -352,7 +362,7 @@ pub fn dtor(_attribute: TokenStream, function: TokenStream) -> TokenStream {
                 __cxa_atexit(cb, std::ptr::null(), __dso_handle);
             }
 
-            #[used]
+            #[used(linker)]
             #[allow(non_upper_case_globals)]
             #tokens
             static __dtor_export
